@@ -96,30 +96,6 @@ Network topology optimization (NTO) via busbar splitting can mitigate transmissi
 
 ---
 
-## Installation
-
-### Clone repository
-
-```bash
-git clone https://github.com/<username>/GNN-OSS-Topology-Control.git
-cd GNN-OSS-Topology-Control
-```
-
-### Create environment
-
-```bash
-conda create -n gnn-oss python=3.12
-conda activate gnn-oss
-```
-
-### Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
 ## Main Dependencies
 
 - Python 3.12
