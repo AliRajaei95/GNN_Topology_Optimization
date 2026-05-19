@@ -1,5 +1,5 @@
 🚧 Code release in progress
-# GNN-Accelerated Topology Optimization
+# GNN-Accelerated Network Topology Optimization
 
 **Author:** Ali Rajaei  
 **Affiliation:** Delft-AI Energy Lab, Department of Electrical Sustainable Energy, Delft University of Technology
