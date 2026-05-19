@@ -47,16 +47,26 @@ Network topology optimization (NTO) via busbar splitting can mitigate transmissi
 ## Repository Structure
 
 ```text
-├── DC_Optimal_Splitting_Functions_Pyomo.py
-├── AC_Optimal_Splitting_Functions_Pyomo.py
-├── DataGeneration_OSS.py
-├── Prepare_Features.py
-├── FNN_Functions.py
-├── HomoGNN_Functions.py
-├── HeteroGNN_Functions.py
-├── CaseStudies/
-├── Datasets/
-├── Models/
+├── Optimization_Functions/
+│   ├── DC_Optimal_Splitting_Functions_Pyomo.py
+│   └── AC_Optimal_Splitting_Functions_Pyomo.py
+│
+├── ML_Functions/
+│   ├── Prepare_Features.py
+│   ├── FNN_Functions.py
+│   ├── HomoGNN_Functions.py
+│   └── HeteroGNN_Functions.py
+│
+├── Examples_CaseStudies/
+│   ├── DataGeneration_OSS.py
+│   ├── CaseStudy_IVB_PredictionAccuracy.py
+│   ├── CaseStudy_IVC_GeneralizationTopology.py
+│   ├── CaseStudy_IVD_ZeroShotTransferability.py
+│   ├── CaseStudy_IVD_TransferLearning.py
+│   └── CaseStudy_IVE_ComputationalEfficiency.py
+│
+├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
