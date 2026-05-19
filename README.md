@@ -1,11 +1,18 @@
+🚧 Code release in progress
+# GNN-Accelerated Topology Optimization
 
+**Author:** Ali Rajaei  
+**Affiliation:** Delft-AI Energy Lab, Department of Electrical Sustainable Energy, Delft University of Technology, the Netherlands  
+**Contact:** a.rajaei@tudelft.nl  
+**Date:** March 2026  
 
-This repository was developed by **Ali Rajaei** for the paper:
+This repository accompanies the research paper:
 
-> **[Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting]**  
-> Published in: [PSCC 2026]  
-> Paper link: [[LINK](https://arxiv.org/abs/2510.20591)]
+> Ali Rajaei, Peter Palensky, Jochen L. Cremer.  
+> ["Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting."]([https://arxiv.org/abs/2603.04203](https://arxiv.org/abs/2510.20591))  
+> *PSCC*, 2026.
 
+---
 ---
 
 ## Overview
@@ -16,7 +23,7 @@ This repository contains the implementation of:
 - AC optimal substation switching (AC-OSS)
 - Congestion-management formulations
 - Machine-learning-assisted topology control
-- Feedforward neural networks (FNNs)
+- Feed-forward neural networks (FNNs)
 - Homogeneous graph neural networks (HomoGNNs)
 - Heterogeneous graph neural networks (HeteroGNNs)
 - Dataset generation pipelines
@@ -33,7 +40,7 @@ The framework is developed for power-system topology-control research using:
 
 ## Abstract
 
-[PASTE PAPER ABSTRACT HERE]
+Network topology optimization (NTO) via busbar splitting can mitigate transmission grid congestion and reduce redispatch costs. However, solving this mixed-integer nonlinear problem for large-scale systems in near-real-time is currently intractable with existing solvers. Machine learning (ML) approaches have emerged as a promising alternative, but they have limited generalization to unseen topologies, varying operating conditions, and different systems, which limits their practical applicability. This paper formulates NTO for congestion management considering linearized AC power flow, and proposes a graph neural network (GNN)-accelerated approach. We develop a heterogeneous edge-aware message passing GNN to predict effective nodes for busbar splitting actions as candidate NTO solutions. The proposed GNN captures local flow patterns, improves generalization to unseen topology changes, and enhances transferability across systems. Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible solutions within one minute and a 2.3% optimality gap on the GOC 2000-bus system. These results demonstrate a significant step toward near-real-time NTO for large-scale systems with topology and cross-system generalization.
 
 ---
 
@@ -156,11 +163,11 @@ python CaseStudy_IVE_ComputationalEfficiency.py
 If you use this repository in your research, please cite:
 
 ```bibtex
-@article{Rajaei2025,
-  author  = {Ali Rajaei},
-  title   = {Paper Title},
-  journal = {Journal Name},
-  year    = {2025}
+@article{rajaei2025transferable,
+  title={Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting},
+  author={Rajaei, Ali and Palensky, Peter and Cremer, Jochen L},
+  journal={PSCC},
+  year={2026}
 }
 ```
 
