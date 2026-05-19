@@ -10,7 +10,7 @@ This repository accompanies the research paper:
 
 > Ali Rajaei, Peter Palensky, Jochen L. Cremer.  
 > ["Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting."](https://arxiv.org/abs/2510.20591)
-> *Power Systems Computation Conference (PSCC), 2026.
+> Power Systems Computation Conference (PSCC), 2026.
 
 ---
 
