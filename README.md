@@ -13,7 +13,6 @@ This repository accompanies the research paper:
 > *PSCC*, 2026.
 
 ---
----
 
 ## Overview
 
@@ -41,6 +40,24 @@ The framework is developed for power-system topology-control research using:
 ## Abstract
 
 Network topology optimization (NTO) via busbar splitting can mitigate transmission grid congestion and reduce redispatch costs. However, solving this mixed-integer nonlinear problem for large-scale systems in near-real-time is currently intractable with existing solvers. Machine learning (ML) approaches have emerged as a promising alternative, but they have limited generalization to unseen topologies, varying operating conditions, and different systems, which limits their practical applicability. This paper formulates NTO for congestion management considering linearized AC power flow, and proposes a graph neural network (GNN)-accelerated approach. We develop a heterogeneous edge-aware message passing GNN to predict effective nodes for busbar splitting actions as candidate NTO solutions. The proposed GNN captures local flow patterns, improves generalization to unseen topology changes, and enhances transferability across systems. Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible solutions within one minute and a 2.3% optimality gap on the GOC 2000-bus system. These results demonstrate a significant step toward near-real-time NTO for large-scale systems with topology and cross-system generalization.
+
+---
+
+### Algorithm in action
+<p align="center">
+  <img src="Figures/demonstrator.gif" width="500"><br>
+  <em>Toy example of topology remedial action to reduce grid congestion.</em>
+</p>
+
+---
+### Method Overview
+
+<p align="center">
+<img src="Figures/method_overview.jpg" width="650">
+</p>
+
+*Workflow of the proposed GNN-accelerated network topology optimization*
+
 
 ---
 
