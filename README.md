@@ -192,5 +192,4 @@ This project is licensed under the MIT License.
 ## Contact
 
 **Ali Rajaei**  
-[Email]  
-[Google Scholar / LinkedIn / Website]
+a.rajaei@tudelft.nl and alirajaei95@gmail.com 
