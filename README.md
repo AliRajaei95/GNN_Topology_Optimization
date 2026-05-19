@@ -54,7 +54,6 @@ Network topology optimization (NTO) via busbar splitting can mitigate transmissi
 
 <p align="center">
   <img src="Figures/method_overview.jpg" width="650">
-  Workflow of the proposed GNN-accelerated network topology optimization.
 </p>
 <em>Workflow of the proposed GNN-accelerated network topology optimization.<em>
 
