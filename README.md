@@ -2,7 +2,7 @@
 # GNN-Accelerated Topology Optimization
 
 **Author:** Ali Rajaei  
-**Affiliation:** Delft-AI Energy Lab, Department of Electrical Sustainable Energy, Delft University of Technology, the Netherlands  
+**Affiliation:** Delft-AI Energy Lab, Department of Electrical Sustainable Energy, Delft University of Technology
 **Contact:** a.rajaei@tudelft.nl  
 **Date:** March 2026  
 
@@ -53,7 +53,8 @@ Network topology optimization (NTO) via busbar splitting can mitigate transmissi
 ### Method Overview
 
 <p align="center">
-<img src="Figures/method_overview.jpg" width="650">
+  <img src="Figures/method_overview.jpg" width="650">
+  <em>Workflow of the proposed GNN-accelerated network topology optimization.<em>
 </p>
 <em>Workflow of the proposed GNN-accelerated network topology optimization.<em>
 
@@ -178,10 +179,3 @@ If you use this repository in your research, please cite:
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-## Contact
-
-**Ali Rajaei**  
-a.rajaei@tudelft.nl and alirajaei95@gmail.com 
