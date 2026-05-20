@@ -1,4 +1,3 @@
-🚧 Code release in progress
 # GNN-Accelerated Network Topology Optimization
 
 **Author:** Ali Rajaei  
