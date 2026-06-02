@@ -49,7 +49,7 @@ Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible s
 ### Algorithm in action
 <p align="center">
   <img src="Figures/demonstrator.gif" width="800"><br>
-  <em>Toy example of topology remedial action to reduce grid congestion.</em>
+  <em>Figure 1. Toy example of topology remedial action to reduce grid congestion.</em>
 </p>
 
 ---
@@ -58,15 +58,16 @@ Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible s
 <p align="center">
   <img src="Figures/concept.png" width="650">
 </p>
-<em>Conceptual illustration of the proposed GNN-based topology control framework .<em>
-
-
-
+<p align="center">
+  <em>Figure 2. Conceptual illustration of the proposed GNN-based topology control framework.</em>
+</p>
 
 <p align="center">
   <img src="Figures/method_overview.jpg" width="650">
 </p>
-<em>Workflow of the proposed GNN-accelerated network topology optimization.<em>
+<p align="center">
+  <em>Figure 3. Workflow of the proposed GNN-accelerated network topology optimization.</em>
+</p>
 
 ## Repository Structure
 
