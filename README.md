@@ -56,6 +56,13 @@ Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible s
 ### Method Overview
 
 <p align="center">
+  <img src="Figures/gpt-1" width="650">
+</p>
+<em>Conceptual illustration of the proposed GNN-based topology control framework .<em>
+
+
+
+<p align="center">
   <img src="Figures/method_overview.jpg" width="650">
 </p>
 <em>Workflow of the proposed GNN-accelerated network topology optimization.<em>
