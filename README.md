@@ -19,7 +19,7 @@ This repository accompanies the research paper:
 This repository contains the implementation of:
 
 - DC-based optimal substation switching
-- AC-based optimal substation switching
+- AC-based optimal substation switching 🚧
 - Congestion-management formulations
 - Machine-learning-accelerated topology optimization
 - Feed-forward neural networks (FNNs)
@@ -77,7 +77,7 @@ Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible s
 | Purpose | Script |
 |---|---|
 | DC-based OPF, congestion-management, and optimal substation switching formulations | `DC_Optimal_Splitting_Functions.py` |
-| AC-based OPF, congestion-management, and optimal substation switching formulations | `AC_Optimal_Splitting_Functions.py` |
+| AC-based OPF, congestion-management, and optimal substation switching formulations | `AC_Optimal_Splitting_Functions.py` 🚧 |
 | Training data generation pipeline, random load/outage/gen cost sampling | `DataGeneration_Functions.py` |
 | Helper functions for Section IV-E computational-efficiency experiments | `Casestudy_Time_Functions.py` |
 
