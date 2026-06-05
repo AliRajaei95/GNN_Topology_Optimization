@@ -9,6 +9,7 @@ and topology optimization in power systems.
 The implementations include:
     - grid input data are in the DC-OSS file
     - AC optimal power flow (AC-OPF)
+        - Note: we use a linear AC-PF model. The current version is a loss-less linear AC-PF. The full model will be released soon. 
     - Feasibility-restoration AC-OPF
     - Machine-learning-assisted AC-OSS formulations
 
