@@ -76,7 +76,7 @@ def CaseStudy5_Time_Clf_Reg(networkdata,CLf_test_res,Reg_test_res,modeltype='FNN
     for i in range(num_samples):
       # if task == 'Clf':
       # Clf
-      pred = CLf_test_res['target_by_sample'][i][ mask_arr[i] ]
+      pred = CLf_test_res['pred_by_sample'][i][ mask_arr[i] ]
       paired = [(p, b) for p, b in zip(pred, bus_sw_list[i]) if p > -0.5]
       paired_sorted = sorted(paired, key=lambda x: x[0], reverse=True)
       top_k = paired_sorted[:TopMLActions]
@@ -85,7 +85,7 @@ def CaseStudy5_Time_Clf_Reg(networkdata,CLf_test_res,Reg_test_res,modeltype='FNN
 
       # if task == 'Reg':
       #Reg
-      pred = Reg_test_res['target_by_sample'][i][ mask_arr[i] ]
+      pred = Reg_test_res['pred_by_sample'][i][ mask_arr[i] ]
       paired = [(p, b) for p, b in zip(pred, bus_sw_list[i]) if p > -0.5]
       paired_sorted = sorted(paired, key=lambda x: x[0], reverse=True)
       top_k = paired_sorted[:TopMLActions]
@@ -425,7 +425,7 @@ def CaseStudy5_AC_Time_Clf_Reg(networkdata,CLf_test_res,Reg_test_res,modeltype='
     for i in range(num_samples):
       # if task == 'Clf':
       # Clf
-      pred = CLf_test_res['target_by_sample'][i][ mask_arr[i] ]
+      pred = CLf_test_res['pred_by_sample'][i][ mask_arr[i] ]
       paired = [(p, b) for p, b in zip(pred, bus_sw_list[i]) if p > -0.5]
       paired_sorted = sorted(paired, key=lambda x: x[0], reverse=True)
       top_k = paired_sorted[:TopMLActions]
@@ -434,7 +434,7 @@ def CaseStudy5_AC_Time_Clf_Reg(networkdata,CLf_test_res,Reg_test_res,modeltype='
 
       # if task == 'Reg':
       #Reg
-      pred = Reg_test_res['target_by_sample'][i][ mask_arr[i] ]
+      pred = Reg_test_res['pred_by_sample'][i][ mask_arr[i] ]
       paired = [(p, b) for p, b in zip(pred, bus_sw_list[i]) if p > -0.5]
       paired_sorted = sorted(paired, key=lambda x: x[0], reverse=True)
       top_k = paired_sorted[:TopMLActions]
