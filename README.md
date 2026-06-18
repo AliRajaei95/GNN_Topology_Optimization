@@ -136,6 +136,11 @@ If you use this repository in your research, please cite:
   year={2026}
 }
 ```
+---
+
+## 📎 Presentation at PSCC 2026
+
+[🔗 PSCC 2026 Presentation](https://github.com/AliRajaei95/GNN_Topology_Optimization/tree/main/Figures/PSCC2026_Ali_presentation.pdf)
 
 ---
 
