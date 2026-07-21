@@ -9,7 +9,7 @@
 This repository accompanies the research paper:
 
 > Ali Rajaei, Peter Palensky, Jochen L. Cremer.  
-> ["Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting."](https://arxiv.org/abs/2510.20591)   
+> ["Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting."](https://www.sciencedirect.com/science/article/pii/S0378779626010539)   
 > *Power Systems Computation Conference (PSCC)*, 2026.
 
 ---
@@ -129,11 +129,15 @@ Case studies show up to 4 orders-of-magnitude speed-up, delivering AC-feasible s
 If you use this repository in your research, please cite:
 
 ```bibtex
-@article{rajaei2025transferable,
-  title={Transferable Graph Learning for Transmission Congestion Management via Busbar Splitting},
-  author={Rajaei, Ali and Palensky, Peter and Cremer, Jochen L},
-  journal={Power Systems Computation Conference (PSCC)},
-  year={2026}
+@article{rajaei2027transferable,
+ journal = {Electric Power Systems Research},
+volume = {263},
+pages = {113760},
+year = {2027},
+issn = {0378-7796},
+doi = {https://doi.org/10.1016/j.epsr.2026.113760},
+url = {https://www.sciencedirect.com/science/article/pii/S0378779626010539},
+author = {Ali Rajaei and Peter Palensky and Jochen L. Cremer}
 }
 ```
 ---
