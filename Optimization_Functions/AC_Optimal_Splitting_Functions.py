@@ -9,7 +9,6 @@ and topology optimization in power systems.
 The implementations include:
     - grid input data are in the DC-OSS file
     - AC optimal power flow (AC-OPF)
-        - Note: we use a linear AC-PF model. The current version is a loss-less linear AC-PF. The full model will be released soon. 
     - Feasibility-restoration AC-OPF
     - Machine-learning-assisted AC-OSS formulations
 
@@ -640,7 +639,9 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
                                 Max_Sw_bus=0,
                                 LineLimit=1.0, # you can relax the line limit to allow force-switching
                                 Zinitial=None,
-                                Zfixdict=None):
+                                Zfixdict=None,
+                                Vol0_li=None,
+                                delta0_li=None):
     """
     Create an ML-assisted congestion-management AC OSS Pyomo model.
 
@@ -665,6 +666,14 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
             Initial values for binary switching variables.
         Zfixdict : dict, optional
             Dictionary for fixing switching configurations.
+        Vol0_li : mapping or scalar, optional
+            Voltage-magnitude linearization point at each line terminal. If not
+            supplied, all terminals are initialized to 1.0 p.u. The resulting
+            Pyomo parameter is mutable.
+        delta0_li : mapping or scalar, optional
+            Voltage-angle linearization point at each line terminal. If not
+            supplied, all terminals are initialized to 0.0 radians. The resulting
+            Pyomo parameter is mutable.
 
         Returns
         -------
@@ -729,6 +738,24 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
     limit_init = {(l,i,j): branch.loc[(l, i, j), 'limit'] for l, i, j in Lines}
     model.limit = pyo.Param(model.Lines, initialize=limit_init, mutable=True)
 
+    def line_parameter_values(values, default):
+        if values is None:
+            return {(l, i, j): default for l, i, j in Lines}
+        if np.isscalar(values):
+            return {(l, i, j): values for l, i, j in Lines}
+        return {(l, i, j): values[l, i, j] for l, i, j in Lines}
+
+    model.Vol0_li = pyo.Param(
+        model.Lines,
+        initialize=line_parameter_values(Vol0_li, 1.0),
+        mutable=True,
+    )
+    model.delta0_li = pyo.Param(
+        model.Lines,
+        initialize=line_parameter_values(delta0_li, 0.0),
+        mutable=True,
+    )
+
     cong_cost_init = {(l,sg): Cong_sg_data.loc[(l, sg), 's']  for l,sg in model.LineSeg  }
     model.cong_cost_s = pyo.Param(model.LineSeg, initialize=cong_cost_init, mutable=True)
 
@@ -749,6 +776,13 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
     model.delta_li = pyo.Var(model.Lines)
     model.V2_bi = pyo.Var(model.Bus_sub, model.busbar)
     model.V2_li = pyo.Var(model.Lines)
+    model.Ploss = pyo.Var(model.Lines)
+    model.Qloss = pyo.Var(model.Lines)
+    model.Ploss_vol = pyo.Var(model.Lines)
+    model.Qloss_vol = pyo.Var(model.Lines)
+    model.Ploss_delta = pyo.Var(model.Lines)
+    model.Qloss_delta = pyo.Var(model.Lines)
+    model.epsilon = pyo.Var(model.Lines, domain=pyo.NonNegativeReals)
 
     model.z_bus = pyo.Var(model.Bus_sub, domain=pyo.Binary)
     model.z_li = pyo.Var(model.Lines_sub, domain=pyo.Binary)
@@ -843,13 +877,17 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
         return qinj_sum + m.sqp[b] - m.sqn[b] ==  qflow_sum
     model.eq_qbalance_nonsub_rule = pyo.Constraint(model.Bus_non_sub, rule=eq_qbalance_nonsub_rule)
 
-    #AC P-V equations
+    # Linearized AC branch-flow equations with losses
     def eqPij_rule(m, l, i, j):
         if l in m.outage_lines:
             return pyo.Constraint.Skip
         g_ij = branch.loc[(l,i,j)]['g_ij']
         b_ij = branch.loc[(l,i,j)]['b_ij']
-        return m.Pflow[l,i,j] == 0.5*g_ij*(m.V2_li[l,i,j] - m.V2_li[l,j,i]) - b_ij*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+        return m.Pflow[l,i,j] == (
+            0.5*g_ij*(m.V2_li[l,i,j] - m.V2_li[l,j,i])
+            - b_ij*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+            + m.Ploss[l,i,j]
+        )
     model.eqPij = pyo.Constraint(model.Lines, rule=eqPij_rule)
 
     def eqQij_rule(m, l, i, j):
@@ -857,8 +895,76 @@ def Create_ML_Cong_AC_OSS_Pyomo(data,
             return pyo.Constraint.Skip
         g_ij = branch.loc[(l,i,j)]['g_ij']
         b_ij = branch.loc[(l,i,j)]['b_ij']
-        return m.Qflow[l,i,j] == -0.5*b_ij*(m.V2_li[l,i,j] - m.V2_li[l,j,i]) - g_ij*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+        return m.Qflow[l,i,j] == (
+            -0.5*b_ij*(m.V2_li[l,i,j] - m.V2_li[l,j,i])
+            - g_ij*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+            + m.Qloss[l,i,j]
+        )
     model.eqQij = pyo.Constraint(model.Lines, rule=eqQij_rule)
+
+    def eqPloss_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        return m.Ploss[l,i,j] == m.Ploss_vol[l,i,j] + m.Ploss_delta[l,i,j]
+    model.eqPloss = pyo.Constraint(model.Lines, rule=eqPloss_rule)
+
+    def eqQloss_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        return m.Qloss[l,i,j] == m.Qloss_vol[l,i,j] + m.Qloss_delta[l,i,j]
+    model.eqQloss = pyo.Constraint(model.Lines, rule=eqQloss_rule)
+
+    def eqPloss_pos_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        return m.Ploss[l,i,j] + m.epsilon[l,i,j] >= 0
+    model.eqPloss_pos = pyo.Constraint(model.Lines, rule=eqPloss_pos_rule)
+
+    def eqPloss_vol_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        g_ij = branch.loc[(l,i,j)]['g_ij']
+        vol0_diff = m.Vol0_li[l,i,j] - m.Vol0_li[l,j,i]
+        vol0_sum = m.Vol0_li[l,i,j] + m.Vol0_li[l,j,i]
+        return m.Ploss_vol[l,i,j] == (
+            g_ij*(vol0_diff/vol0_sum)*(m.V2_li[l,i,j] - m.V2_li[l,j,i])
+            - 0.5*g_ij*vol0_diff**2
+        )
+    model.eqPloss_vol = pyo.Constraint(model.Lines, rule=eqPloss_vol_rule)
+
+    def eqQloss_vol_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        b_ij = branch.loc[(l,i,j)]['b_ij']
+        vol0_diff = m.Vol0_li[l,i,j] - m.Vol0_li[l,j,i]
+        vol0_sum = m.Vol0_li[l,i,j] + m.Vol0_li[l,j,i]
+        return m.Qloss_vol[l,i,j] == (
+            -b_ij*(vol0_diff/vol0_sum)*(m.V2_li[l,i,j] - m.V2_li[l,j,i])
+            + 0.5*b_ij*vol0_diff**2
+        )
+    model.eqQloss_vol = pyo.Constraint(model.Lines, rule=eqQloss_vol_rule)
+
+    def eqPloss_delta_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        g_ij = branch.loc[(l,i,j)]['g_ij']
+        delta0_diff = m.delta0_li[l,i,j] - m.delta0_li[l,j,i]
+        return m.Ploss_delta[l,i,j] == (
+            g_ij*delta0_diff*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+            - 0.5*g_ij*delta0_diff**2
+        )
+    model.eqPloss_delta = pyo.Constraint(model.Lines, rule=eqPloss_delta_rule)
+
+    def eqQloss_delta_rule(m, l, i, j):
+        if l in m.outage_lines:
+            return pyo.Constraint.Skip
+        b_ij = branch.loc[(l,i,j)]['b_ij']
+        delta0_diff = m.delta0_li[l,i,j] - m.delta0_li[l,j,i]
+        return m.Qloss_delta[l,i,j] == (
+            -b_ij*delta0_diff*(m.delta_li[l,i,j] - m.delta_li[l,j,i])
+            + 0.5*b_ij*delta0_diff**2
+        )
+    model.eqQloss_delta = pyo.Constraint(model.Lines, rule=eqQloss_delta_rule)
 
 
     def zero_Pflow_eq(m, l, i, j):
